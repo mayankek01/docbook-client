@@ -67,4 +67,7 @@ export const getMyBookings = () =>
 export const cancelBooking = (slotId: string) =>
   api.post(`/slots/${slotId}/cancel`);
 
+export const ragSearch = (query: string) =>
+  api.post("/rag/search", { query });
+
 export default api;
