@@ -62,7 +62,7 @@ export default function SignupPage() {
           </div>
         )}
 
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-4 text-gray-800">
           {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
