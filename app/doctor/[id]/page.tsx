@@ -40,6 +40,15 @@ const getNextDates = (days: number) => {
   return dates;
 };
 
+// Helper: calculate end time from start time + duration
+const getEndTime = (startTime: string, duration: number) => {
+  const [h, m] = startTime.split(":").map(Number);
+  const totalMinutes = h * 60 + m + duration;
+  const endH = Math.floor(totalMinutes / 60);
+  const endM = totalMinutes % 60;
+  return `${String(endH).padStart(2, "0")}:${String(endM).padStart(2, "0")}`;
+};
+
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr + "T00:00:00");
   return date.toLocaleDateString("en-US", {
@@ -137,7 +146,9 @@ export default function DoctorProfilePage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="text-center py-20 text-gray-500">Loading doctor profile...</div>
+        <div className="text-center py-20 text-gray-500">
+          Loading doctor profile...
+        </div>
       </div>
     );
   }
@@ -167,8 +178,12 @@ export default function DoctorProfilePage() {
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
           <div className="flex flex-col md:flex-row justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-gray-800">{doctor.name}</h1>
-              <p className="text-blue-600 font-medium mt-1">{doctor.speciality}</p>
+              <h1 className="text-2xl font-bold text-gray-800">
+                {doctor.name}
+              </h1>
+              <p className="text-blue-600 font-medium mt-1">
+                {doctor.speciality}
+              </p>
               <p className="text-gray-500 mt-3">{doctor.description}</p>
 
               <div className="flex flex-wrap gap-4 mt-4 text-sm">
@@ -231,7 +246,9 @@ export default function DoctorProfilePage() {
           </div>
 
           {slotsLoading && (
-            <div className="text-center py-8 text-gray-500">Loading slots...</div>
+            <div className="text-center py-8 text-gray-500">
+              Loading slots...
+            </div>
           )}
 
           {!slotsLoading && slots.length === 0 && (
@@ -255,11 +272,12 @@ export default function DoctorProfilePage() {
                       isBooked
                         ? "bg-red-50 text-red-300 cursor-not-allowed line-through"
                         : isSelected
-                        ? "bg-blue-600 text-white"
-                        : "bg-green-50 text-green-700 hover:bg-green-100 cursor-pointer"
+                          ? "bg-blue-600 text-white"
+                          : "bg-green-50 text-green-700 hover:bg-green-100 cursor-pointer"
                     }`}
                   >
-                    {formatTime(slot.startTime)}
+                    {formatTime(slot.startTime)} -{" "}
+                    {formatTime(getEndTime(slot.startTime, slot.duration))}
                     <span className="block text-xs font-normal mt-0.5">
                       {isBooked ? "Booked" : `${slot.duration} min`}
                     </span>
@@ -277,8 +295,8 @@ export default function DoctorProfilePage() {
               </h3>
               <p className="text-sm text-gray-500 mb-4">
                 {formatDate(selectedSlot.date)} at{" "}
-                {formatTime(selectedSlot.startTime)} ({selectedSlot.duration} min)
-                with {doctor.name}
+                {formatTime(selectedSlot.startTime)} ({selectedSlot.duration}{" "}
+                min) with {doctor.name}
               </p>
 
               <div className="mb-4">
