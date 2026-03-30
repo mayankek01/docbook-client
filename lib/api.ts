@@ -1,14 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 // REQUEST INTERCEPTOR
-// Runs before every request — attaches token automatically
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -23,8 +22,6 @@ api.interceptors.request.use(
 );
 
 // RESPONSE INTERCEPTOR
-// On success: unwraps response.data so components get clean data
-// On 401: clears token and redirects to login
 api.interceptors.response.use(
   (response) => {
     return response.data;
